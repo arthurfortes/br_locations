@@ -1,18 +1,21 @@
 from collections import OrderedDict
 import json
+import os
 
 
 class BrazilLocations:
     def __init__(self):
+        this_dir, this_filename = os.path.split(__file__)
+        json_path = os.path.join(this_dir, "states_and_cities_10_22.json")
         self._locations = OrderedDict()
-        self._locations = json.load(open('states_and_cities_10_22.json'))
+        self._locations = json.load(open(json_path))
 
     @property
-    def list_uf(self):
-        return sorted([self._locations[uf]['abbr'] for uf in self._locations])
+    def list_states(self):
+        return sorted([self._locations[s]['abbr'] for s in self._locations])
 
     @property
-    def list_all_city(self):
+    def list_all_cities(self):
         cities = []
 
         for state in self._locations:
@@ -22,10 +25,10 @@ class BrazilLocations:
         return cities
 
     @property
-    def dict_uf(self):
+    def dict_states(self):
         d = {}
-        for uf in self._locations:
-            d[self._locations[uf]['abbr']] = {'code': self._locations[uf]['code'], 'name': self._locations[uf]['name'] }
+        for s in self._locations:
+            d[self._locations[s]['abbr']] = {'code': self._locations[s]['code'], 'name': self._locations[s]['name'] }
         return d
 
     def list_cities(self, abbr=None, code=None):
